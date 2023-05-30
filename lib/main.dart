@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../screens/home.dart';
+import 'screens/post_list_screen.dart';
+import 'screens/post_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/post_list_screen',
       routes: {
-        '/': (context) => const Home(),
+        '/post_list_screen': (context) => const PostList(),
+        '/post_detail_screen': (context) => const PostDetails(),
       },
     );
   }
