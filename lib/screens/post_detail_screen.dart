@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/app_bar.dart';
 
 class PostDetails extends StatefulWidget {
   const PostDetails({super.key});
@@ -10,6 +11,16 @@ class PostDetails extends StatefulWidget {
 class _PostDetailsState extends State<PostDetails> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            CustomAppBar(title: 'Post Details', icon: Icons.chat_bubble),
+          ],
+        ),
+      ),
+    );
   }
 }
