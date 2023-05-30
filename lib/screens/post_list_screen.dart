@@ -116,7 +116,9 @@ class _PostListState extends State<PostList> {
                                   Navigator.pushNamed(
                                     context,
                                     '/post_detail_screen',
-                                    arguments: post,
+                                    arguments: {
+                                      'post_id': post['id'],
+                                    },
                                   );
                                 },
                                 child: ListTile(
