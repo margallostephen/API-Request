@@ -77,10 +77,12 @@ class _CommentsState extends State<Comments> {
                             elevation: 10,
                             shadowColor: Colors.black,
                             child: ListTile(
+                              isThreeLine: true,
                               subtitle: Text(
                                 comment['body'],
                                 style: const TextStyle(
                                   fontSize: 15,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
