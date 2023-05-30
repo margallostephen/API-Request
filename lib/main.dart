@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/post_list_screen.dart';
 import 'screens/post_detail_screen.dart';
+import 'screens/comments_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,7 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/post_list_screen': (context) => const PostList(),
         '/post_detail_screen': (context) => const PostDetails(),
+        '/comments_screen': (context) => const Comments(),
       },
     );
   }

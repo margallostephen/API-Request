@@ -59,35 +59,52 @@ class _PostDetailsState extends State<PostDetails> {
                   Radius.circular(10),
                 ),
               ),
-              child: ListTile(
-                title: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  body,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                trailing: ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    'comment_screen',
-                    arguments: {
-                      'post_id': id,
-                    },
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 54, 23, 94),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        body,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: const Text('View Comments'),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/comments_screen',
+                          arguments: {
+                            'post_id': id,
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'View Comments',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
