@@ -48,6 +48,49 @@ class _CommentFormState extends State<CommentForm> {
                     const SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.red,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Style.violet,
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: Text(
+                                "Add",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
