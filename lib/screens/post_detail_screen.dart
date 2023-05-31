@@ -112,6 +112,44 @@ class _PostDetailsState extends State<PostDetails> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/comment_form',
+                    arguments: {
+                      'post_id': id,
+                      'operation': 'Add Comment',
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Style.violet,
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    'Add Comment',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
