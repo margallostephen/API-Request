@@ -14,6 +14,7 @@ class PostForm extends StatefulWidget {
 class _PostFormState extends State<PostForm> {
   dynamic arguments;
   IconData? icon;
+  int sateCount = 0;
   bool titleChanged = false, bodyChanged = false;
 
   final taskFormKey = GlobalKey<FormState>();
@@ -81,6 +82,12 @@ class _PostFormState extends State<PostForm> {
   Widget build(BuildContext context) {
     arguments = ModalRoute.of(context)?.settings.arguments;
     arguments['operation'] == "Add Post" ? icon = Icons.add : icon = Icons.edit;
+
+    if (arguments['operation'] == "Edit Post" && sateCount == 0) {
+      titleController.text = arguments['title'];
+      bodyController.text = arguments['body'];
+      sateCount++;
+    }
 
     return Scaffold(
       backgroundColor: Style.violet,
@@ -150,7 +157,7 @@ class _PostFormState extends State<PostForm> {
                             }
                           },
                         ),
-                        controller: titleController,
+                        controller: bodyController,
                         decoration: const InputDecoration(
                           labelStyle: TextStyle(
                             color: Style.violet,
@@ -201,12 +208,12 @@ class _PostFormState extends State<PostForm> {
                           ),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (taskFormKey.currentState!.validate()) {
                                   bool okayStatus = false;
 
                                   if (arguments['operation'] == 'Add Post') {
-                                    createPost(
+                                    await createPost(
                                       titleController.text,
                                       bodyController.text,
                                     ).then(
@@ -218,7 +225,7 @@ class _PostFormState extends State<PostForm> {
                                     );
                                   } else {
                                     if (titleChanged && bodyChanged) {
-                                      updatePost(
+                                      await updatePost(
                                         arguments['post_id'],
                                         titleController.text,
                                         bodyController.text,
@@ -242,7 +249,7 @@ class _PostFormState extends State<PostForm> {
                                         }
                                       }
 
-                                      partialUpdatePost(
+                                      await partialUpdatePost(
                                         arguments['post_id'],
                                         data,
                                         type,
@@ -257,6 +264,7 @@ class _PostFormState extends State<PostForm> {
                                   }
 
                                   if (okayStatus) {
+                                    if (!mounted) return;
                                     Navigator.pop(context);
                                   }
                                 } else {
