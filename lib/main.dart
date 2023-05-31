@@ -3,6 +3,7 @@ import 'screens/post_list_screen.dart';
 import 'screens/post_detail_screen.dart';
 import 'screens/comments_screen.dart';
 import 'screens/post_form.dart';
+import 'screens/comment_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/post_detail_screen': (context) => const PostDetails(),
         '/comments_screen': (context) => const Comments(),
         '/post_form': (context) => const PostForm(),
+        '/comment_form': (context) => const CommentForm(),
       },
     );
   }
