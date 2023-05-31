@@ -164,9 +164,10 @@ class _CommentFormState extends State<CommentForm> {
                                   Color backgroundColor = Colors.red;
 
                                   if (arguments['operation'] == 'Add Comment') {
-                                    await createPost(arguments['id'],
-                                            commentController.text)
-                                        .then(
+                                    await createPost(
+                                      arguments['id'],
+                                      commentController.text,
+                                    ).then(
                                       (value) {
                                         if (value.statusCode == 201) {
                                           okayStatus = true;
@@ -221,12 +222,17 @@ class _CommentFormState extends State<CommentForm> {
                                   Style.violet,
                                 ),
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                  "Add",
-                                  style: TextStyle(fontSize: 17),
-                                ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: arguments['operation'] == 'Add Comment'
+                                    ? const Text(
+                                        "Add",
+                                        style: TextStyle(fontSize: 17),
+                                      )
+                                    : const Text(
+                                        "Save",
+                                        style: TextStyle(fontSize: 17),
+                                      ),
                               ),
                             ),
                           ),
