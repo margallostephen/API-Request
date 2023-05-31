@@ -14,6 +14,7 @@ class PostForm extends StatefulWidget {
 class _PostFormState extends State<PostForm> {
   dynamic arguments;
   IconData? icon;
+  int sateCount = 0;
   bool titleChanged = false, bodyChanged = false;
 
   final taskFormKey = GlobalKey<FormState>();
@@ -80,6 +81,12 @@ class _PostFormState extends State<PostForm> {
   Widget build(BuildContext context) {
     arguments = ModalRoute.of(context)?.settings.arguments;
     arguments['operation'] == "Add Post" ? icon = Icons.add : icon = Icons.edit;
+
+    if (arguments['operation'] == "Edit Post" && sateCount == 0) {
+      titleController.text = arguments['title'];
+      bodyController.text = arguments['body'];
+      sateCount++;
+    }
 
     return Scaffold(
       backgroundColor: Style.violet,
