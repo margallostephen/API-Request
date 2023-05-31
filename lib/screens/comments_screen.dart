@@ -76,9 +76,9 @@ class _CommentsState extends State<Comments> {
                             margin: const EdgeInsets.fromLTRB(5, 5, 5, 10),
                             elevation: 10,
                             shadowColor: Colors.black,
-                            child: ListTile(
-                              isThreeLine: true,
-                              subtitle: Text(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
                                 comment['body'],
                                 style: const TextStyle(
                                   fontSize: 15,
