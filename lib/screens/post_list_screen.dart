@@ -13,6 +13,7 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   List<dynamic> _posts = [];
+  List<dynamic> _comments = [];
 
   @override
   void initState() {
@@ -29,12 +30,27 @@ class _PostListState extends State<PostList> {
     }
   }
 
+  Future<void> getComments(int id) async {
+    final response =
+        await http.get(Uri.parse('http://localhost:3000/comments/$id'));
+    if (response.statusCode == 200) {
+      setState(() {
+        _comments = jsonDecode(response.body);
+      });
+    }
+  }
+
   // delete post
   Future<void> deletePost(int id) async {
     final response =
         await http.delete(Uri.parse('http://localhost:3000/posts/$id'));
     if (response.statusCode == 200) {
       fetchData();
+      getComments(id);
+      for (var comment in _comments) {
+        await http.delete(
+            Uri.parse('http://localhost:3000/comments/${comment['id']}'));
+      }
     }
   }
 
