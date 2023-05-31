@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/app_bar.dart';
+import '../components/style.dart';
 
 class PostList extends StatefulWidget {
   const PostList({super.key});
@@ -136,7 +137,30 @@ class _PostListState extends State<PostList> {
                         },
                       ),
               ),
-            )
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 15,
+                ),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      '/task_form',
+                    );
+
+                    fetchData();
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Style.violet,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
