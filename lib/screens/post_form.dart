@@ -82,7 +82,54 @@ class _PostFormState extends State<PostForm> {
                       const SizedBox(
                         height: 20,
                       ),
-                      
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Colors.red,
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Style.violet,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: arguments['operation'] == 'Add Post'
+                                    ? const Text(
+                                        "Add",
+                                        style: TextStyle(fontSize: 17),
+                                      )
+                                    : const Text(
+                                        "Save",
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
