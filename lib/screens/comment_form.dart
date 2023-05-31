@@ -11,6 +11,7 @@ class CommentForm extends StatefulWidget {
 
 class _CommentFormState extends State<CommentForm> {
   final commentFormKey = GlobalKey<FormState>();
+  AutovalidateMode validateMode = AutovalidateMode.disabled;
   TextEditingController commentController = TextEditingController();
 
   @override
@@ -28,6 +29,7 @@ class _CommentFormState extends State<CommentForm> {
               ),
               Form(
                 key: commentFormKey,
+                autovalidateMode: validateMode,
                 child: Column(
                   children: [
                     TextFormField(
@@ -74,7 +76,14 @@ class _CommentFormState extends State<CommentForm> {
                         ),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (commentFormKey.currentState!.validate()) {
+                              } else {
+                                setState(() {
+                                  validateMode = AutovalidateMode.always;
+                                });
+                              }
+                            },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 Style.violet,
