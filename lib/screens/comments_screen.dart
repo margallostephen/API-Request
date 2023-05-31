@@ -1,3 +1,4 @@
+import 'package:api_request/components/style.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,14 @@ class _CommentsState extends State<Comments> {
       setState(() {
         _comments = jsonDecode(response.body);
       });
+    }
+  }
+
+  Future<void> deleteComment(int id) async {
+    final response =
+        await http.delete(Uri.parse('http://localhost:3000/comments/$id'));
+    if (response.statusCode == 200) {
+      fetchData(id);
     }
   }
 
@@ -72,17 +81,60 @@ class _CommentsState extends State<Comments> {
                         itemBuilder: (context, index) {
                           final comment = _comments[index];
 
-                          return Card(
-                            margin: const EdgeInsets.fromLTRB(5, 5, 5, 10),
-                            elevation: 10,
-                            shadowColor: Colors.black,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                comment['body'],
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
+                          return Dismissible(
+                            direction: DismissDirection.startToEnd,
+                            key: Key(comment['id'].toString()),
+                            onDismissed: (_) {
+                              deleteComment(comment['id']);
+                            },
+                            background: Container(
+                              margin: const EdgeInsets.fromLTRB(
+                                5,
+                                5,
+                                5,
+                                10,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.red,
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            child: Card(
+                              margin: const EdgeInsets.fromLTRB(
+                                5,
+                                5,
+                                5,
+                                10,
+                              ),
+                              elevation: 10,
+                              shadowColor: Colors.black,
+                              child: ListTile(
+                                title: Text(
+                                  comment['body'],
+                                ),
+                                trailing: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/comment_screen',
+                                      arguments: {
+                                        'post_id': id,
+                                        'operation': 'Edit Comment'
+                                      },
+                                    );
+                                  },
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Style.violet,
+                                  ),
                                 ),
                               ),
                             ),
