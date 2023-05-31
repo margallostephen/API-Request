@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/app_bar.dart';
+import '../components/style.dart';
 
 class PostDetails extends StatefulWidget {
   const PostDetails({super.key});
@@ -41,7 +42,7 @@ class _PostDetailsState extends State<PostDetails> {
     id = args['post_id'];
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+      backgroundColor: Style.violet,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -87,8 +88,7 @@ class _PostDetailsState extends State<PostDetails> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 54, 23, 94),
+                          backgroundColor: Style.violet,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
