@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
 import '../components/style.dart';
+import '../components/notif.dart';
 
 class PostForm extends StatefulWidget {
   const PostForm({super.key});
@@ -211,6 +212,8 @@ class _PostFormState extends State<PostForm> {
                               onPressed: () async {
                                 if (taskFormKey.currentState!.validate()) {
                                   bool okayStatus = false;
+                                  String message = '';
+                                  Color backgroundColor = Colors.red;
 
                                   if (arguments['operation'] == 'Add Post') {
                                     await createPost(
@@ -220,6 +223,9 @@ class _PostFormState extends State<PostForm> {
                                       (value) {
                                         if (value.statusCode == 201) {
                                           okayStatus = true;
+                                          message =
+                                              'New post added successfully';
+                                          backgroundColor = Colors.green[600]!;
                                         }
                                       },
                                     );
@@ -233,38 +239,57 @@ class _PostFormState extends State<PostForm> {
                                         (value) {
                                           if (value.statusCode == 200) {
                                             okayStatus = true;
+                                            message =
+                                                'Post updated successfully';
+                                            backgroundColor =
+                                                Colors.green[600]!;
                                           }
                                         },
                                       );
                                     } else {
-                                      String data = '', type = '';
-
-                                      if (titleChanged) {
-                                        data = titleController.text;
-                                        type = 'title';
+                                      if (!titleChanged && !bodyChanged) {
+                                        okayStatus = true;
+                                        message =
+                                            'No changes were made to the post';
                                       } else {
-                                        if (bodyChanged) {
-                                          data = bodyController.text;
-                                          type = 'body';
-                                        }
-                                      }
+                                        String data = '', type = '';
 
-                                      await partialUpdatePost(
-                                        arguments['post_id'],
-                                        data,
-                                        type,
-                                      ).then(
-                                        (value) {
-                                          if (value.statusCode == 200) {
-                                            okayStatus = true;
+                                        if (titleChanged) {
+                                          data = titleController.text;
+                                          type = 'title';
+                                        } else {
+                                          if (bodyChanged) {
+                                            data = bodyController.text;
+                                            type = 'body';
                                           }
-                                        },
-                                      );
+                                        }
+
+                                        await partialUpdatePost(
+                                          arguments['post_id'],
+                                          data,
+                                          type,
+                                        ).then(
+                                          (value) {
+                                            if (value.statusCode == 200) {
+                                              okayStatus = true;
+                                              message =
+                                                  'Post partially updated successfully';
+                                              backgroundColor =
+                                                  Colors.green[600]!;
+                                            }
+                                          },
+                                        );
+                                      }
                                     }
                                   }
 
                                   if (okayStatus) {
                                     if (!mounted) return;
+                                    Notif.showMessage(
+                                      message,
+                                      backgroundColor,
+                                      context,
+                                    );
                                     Navigator.pop(context);
                                   }
                                 } else {
