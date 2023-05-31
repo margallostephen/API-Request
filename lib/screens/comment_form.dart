@@ -46,6 +46,13 @@ class _CommentFormState extends State<CommentForm> {
                         focusedBorder: Style.focused,
                         focusedErrorBorder: Style.errorFocused,
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a comment';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     const SizedBox(
                       height: 20,
