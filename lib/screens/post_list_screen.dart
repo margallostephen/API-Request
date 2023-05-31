@@ -41,7 +41,7 @@ class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+      backgroundColor: Style.violet,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
