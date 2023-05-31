@@ -76,30 +76,34 @@ class _PostDetailsState extends State<PostDetails> {
                           fontSize: 16,
                         ),
                       ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/comments_screen',
-                          arguments: {
-                            'post_id': id,
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 54, 23, 94),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/comments_screen',
+                            arguments: {
+                              'post_id': id,
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 54, 23, 94),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                         ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'View Comments',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            'View Comments',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
