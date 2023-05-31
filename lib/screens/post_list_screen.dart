@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/app_bar.dart';
+import '../components/style.dart';
 
 class PostList extends StatefulWidget {
   const PostList({super.key});
@@ -12,6 +13,7 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   List<dynamic> _posts = [];
+  List<dynamic> _comments = [];
 
   @override
   void initState() {
@@ -28,19 +30,34 @@ class _PostListState extends State<PostList> {
     }
   }
 
+  Future<void> getComments(int id) async {
+    final response =
+        await http.get(Uri.parse('http://localhost:3000/comments/$id'));
+    if (response.statusCode == 200) {
+      setState(() {
+        _comments = jsonDecode(response.body);
+      });
+    }
+  }
+
   // delete post
   Future<void> deletePost(int id) async {
     final response =
         await http.delete(Uri.parse('http://localhost:3000/posts/$id'));
     if (response.statusCode == 200) {
       fetchData();
+      getComments(id);
+      for (var comment in _comments) {
+        await http.delete(
+            Uri.parse('http://localhost:3000/comments/${comment['id']}'));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+      backgroundColor: Style.violet,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -129,6 +146,26 @@ class _PostListState extends State<PostList> {
                                     ),
                                   ),
                                   subtitle: Text(post['body']),
+                                  trailing: GestureDetector(
+                                    onTap: () async {
+                                      await Navigator.pushNamed(
+                                        context,
+                                        '/post_form',
+                                        arguments: {
+                                          'post_id': post['id'],
+                                          'operation': 'Edit Post',
+                                          'title': post['title'],
+                                          'body': post['body'],
+                                        },
+                                      );
+
+                                      fetchData();
+                                    },
+                                    child: const Icon(
+                                      Icons.edit_square,
+                                      color: Style.violet,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -136,7 +173,36 @@ class _PostListState extends State<PostList> {
                         },
                       ),
               ),
-            )
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 15,
+                ),
+                child: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      '/post_form',
+                      arguments: {
+                        'post_id': 0,
+                        'operation': 'Add Post',
+                        'title': '',
+                        'body': '',
+                      },
+                    );
+
+                    fetchData();
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Style.violet,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

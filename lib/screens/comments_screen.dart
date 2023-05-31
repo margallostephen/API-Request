@@ -1,6 +1,7 @@
 import 'package:api_request/components/style.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
+import '../components/style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -47,7 +48,7 @@ class _CommentsState extends State<Comments> {
     id = args['post_id'];
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 54, 23, 94),
+      backgroundColor: Style.violet,
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
