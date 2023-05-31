@@ -165,7 +165,7 @@ class _CommentFormState extends State<CommentForm> {
 
                                   if (arguments['operation'] == 'Add Comment') {
                                     await createPost(
-                                      arguments['id'],
+                                      arguments['post_id'],
                                       commentController.text,
                                     ).then(
                                       (value) {
@@ -180,7 +180,7 @@ class _CommentFormState extends State<CommentForm> {
                                   } else {
                                     if (commentChanged) {
                                       await updatePost(
-                                        arguments['id'],
+                                        arguments['post_id'],
                                         commentController.text,
                                       ).then(
                                         (value) {
