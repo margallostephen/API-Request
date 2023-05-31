@@ -86,142 +86,154 @@ class _CommentFormState extends State<CommentForm> {
               Form(
                 key: commentFormKey,
                 autovalidateMode: validateMode,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      onChanged: (value) => setState(
-                        () {
-                          if (value != arguments['body']) {
-                            commentChanged = true;
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(20, 25, 20, 25),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        onChanged: (value) => setState(
+                          () {
+                            if (value != arguments['body']) {
+                              commentChanged = true;
+                            } else {
+                              commentChanged = false;
+                            }
+                          },
+                        ),
+                        controller: commentController,
+                        decoration: const InputDecoration(
+                          labelStyle: TextStyle(
+                            color: Style.violet,
+                          ),
+                          labelText: 'Comment',
+                          prefixIcon: Icon(Icons.comment, color: Style.violet),
+                          prefixIconColor: Style.violet,
+                          border: Style.normal,
+                          enabledBorder: Style.normal,
+                          focusedBorder: Style.focused,
+                          focusedErrorBorder: Style.errorFocused,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a comment';
                           } else {
-                            commentChanged = false;
+                            return null;
                           }
                         },
                       ),
-                      controller: commentController,
-                      decoration: const InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Style.violet,
-                        ),
-                        labelText: 'Comment',
-                        prefixIcon: Icon(Icons.comment, color: Style.violet),
-                        prefixIconColor: Style.violet,
-                        border: Style.normal,
-                        enabledBorder: Style.normal,
-                        focusedBorder: Style.focused,
-                        focusedErrorBorder: Style.errorFocused,
+                      const SizedBox(
+                        height: 20,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a comment';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.red,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Colors.red,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(fontSize: 17),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(fontSize: 17),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (commentFormKey.currentState!.validate()) {
-                                bool okayStatus = false;
-                                String message = '';
-                                Color backgroundColor = Colors.red;
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (commentFormKey.currentState!.validate()) {
+                                  bool okayStatus = false;
+                                  String message = '';
+                                  Color backgroundColor = Colors.red;
 
-                                if (arguments['operation'] == 'Add Comment') {
-                                  await createPost(arguments['id'],
-                                          commentController.text)
-                                      .then(
-                                    (value) {
-                                      if (value.statusCode == 201) {
-                                        okayStatus = true;
-                                        message =
-                                            'New comment added successfully';
-                                        backgroundColor = Colors.green[600]!;
-                                      }
-                                    },
-                                  );
-                                } else {
-                                  if (commentChanged) {
-                                    await updatePost(
-                                      arguments['id'],
-                                      commentController.text,
-                                    ).then(
+                                  if (arguments['operation'] == 'Add Comment') {
+                                    await createPost(arguments['id'],
+                                            commentController.text)
+                                        .then(
                                       (value) {
-                                        if (value.statusCode == 200) {
+                                        if (value.statusCode == 201) {
                                           okayStatus = true;
                                           message =
-                                              'Comment updated successfully';
+                                              'New comment added successfully';
                                           backgroundColor = Colors.green[600]!;
                                         }
                                       },
                                     );
                                   } else {
-                                    if (!commentChanged) {
-                                      okayStatus = true;
-                                      message = 'No changes made';
+                                    if (commentChanged) {
+                                      await updatePost(
+                                        arguments['id'],
+                                        commentController.text,
+                                      ).then(
+                                        (value) {
+                                          if (value.statusCode == 200) {
+                                            okayStatus = true;
+                                            message =
+                                                'Comment updated successfully';
+                                            backgroundColor =
+                                                Colors.green[600]!;
+                                          }
+                                        },
+                                      );
+                                    } else {
+                                      if (!commentChanged) {
+                                        okayStatus = true;
+                                        message = 'No changes made';
+                                      }
                                     }
                                   }
-                                }
 
-                                if (okayStatus) {
-                                  if (!mounted) return;
-                                  Notif.showMessage(
-                                    message,
-                                    backgroundColor,
-                                    context,
-                                  );
-                                  Navigator.pop(context);
+                                  if (okayStatus) {
+                                    if (!mounted) return;
+                                    Notif.showMessage(
+                                      message,
+                                      backgroundColor,
+                                      context,
+                                    );
+                                    Navigator.pop(context);
+                                  }
+                                } else {
+                                  setState(() {
+                                    validateMode = AutovalidateMode.always;
+                                  });
                                 }
-                              } else {
-                                setState(() {
-                                  validateMode = AutovalidateMode.always;
-                                });
-                              }
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Style.violet,
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Style.violet,
+                                ),
                               ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Text(
-                                "Add",
-                                style: TextStyle(fontSize: 17),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  "Add",
+                                  style: TextStyle(fontSize: 17),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
