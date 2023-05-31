@@ -129,6 +129,13 @@ class _PostFormState extends State<PostForm> {
                           focusedBorder: Style.focused,
                           focusedErrorBorder: Style.errorFocused,
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a post title';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -156,6 +163,13 @@ class _PostFormState extends State<PostForm> {
                           focusedBorder: Style.focused,
                           focusedErrorBorder: Style.errorFocused,
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a post body';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -217,6 +231,7 @@ class _PostFormState extends State<PostForm> {
                                       );
                                     } else {
                                       String data = '', type = '';
+
                                       if (titleChanged) {
                                         data = titleController.text;
                                         type = 'title';
@@ -226,6 +241,7 @@ class _PostFormState extends State<PostForm> {
                                           type = 'body';
                                         }
                                       }
+
                                       partialUpdatePost(
                                         arguments['post_id'],
                                         data,
