@@ -33,7 +33,6 @@ class _PostFormState extends State<PostForm> {
         <String, String>{
           'title': title,
           'body': body,
-          'userId': '1',
         },
       ),
     );
