@@ -18,6 +18,7 @@ class _PostFormState extends State<PostForm> {
   bool titleChanged = false, bodyChanged = false;
 
   final taskFormKey = GlobalKey<FormState>();
+  AutovalidateMode validateMode = AutovalidateMode.disabled;
   TextEditingController titleController = TextEditingController(),
       bodyController = TextEditingController();
 
@@ -101,6 +102,7 @@ class _PostFormState extends State<PostForm> {
               ),
               Form(
                 key: taskFormKey,
+                autovalidateMode: validateMode,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(20, 25, 20, 25),
                   decoration: const BoxDecoration(
@@ -265,6 +267,10 @@ class _PostFormState extends State<PostForm> {
                                     if (!mounted) return;
                                     Navigator.pop(context);
                                   }
+                                } else {
+                                  setState(() {
+                                    validateMode = AutovalidateMode.always;
+                                  });
                                 }
                               },
                               style: ButtonStyle(
