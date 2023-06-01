@@ -1,4 +1,3 @@
-import 'package:api_request/components/style.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
 import '../components/style.dart';
@@ -15,6 +14,7 @@ class Comments extends StatefulWidget {
 class _CommentsState extends State<Comments> {
   int id = 0;
   List<dynamic> _comments = [];
+  final List<dynamic> _postComments = [];
 
   @override
   void initState() {
@@ -25,11 +25,21 @@ class _CommentsState extends State<Comments> {
   }
 
   Future<void> fetchData(int id) async {
+    _comments.clear();
+    _postComments.clear();
+
     final response =
         await http.get(Uri.parse('http://localhost:3000/posts/$id/comments'));
     if (response.statusCode == 200) {
+      _comments = jsonDecode(response.body);
+
       setState(() {
-        _comments = jsonDecode(response.body);
+        for (var comment in _comments) {
+          if (comment['postId'] == id.toString() &&
+              !_postComments.contains(comment['id'])) {
+            _postComments.add(comment);
+          }
+        }
       });
     }
   }
@@ -67,7 +77,7 @@ class _CommentsState extends State<Comments> {
                     Radius.circular(10),
                   ),
                 ),
-                child: _comments.isEmpty
+                child: _postComments.isEmpty
                     ? const Center(
                         child: Text(
                           'No Comment Yet',
@@ -78,15 +88,18 @@ class _CommentsState extends State<Comments> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _comments.length,
+                        itemCount: _postComments.length,
                         itemBuilder: (context, index) {
-                          final comment = _comments[index];
+                          final comment = _postComments[index];
 
                           return Dismissible(
                             direction: DismissDirection.startToEnd,
                             key: Key(comment['id'].toString()),
                             onDismissed: (_) {
                               deleteComment(comment['id']);
+                              setState(() {
+                                _postComments.removeAt(index);
+                              });
                             },
                             background: Container(
                               margin: const EdgeInsets.fromLTRB(
@@ -122,15 +135,19 @@ class _CommentsState extends State<Comments> {
                                   comment['body'],
                                 ),
                                 trailing: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
                                       context,
-                                      '/comment_screen',
+                                      '/comment_form',
                                       arguments: {
-                                        'post_id': id,
+                                        'comment_id': comment['id'],
+                                        'post_id': comment['postId'],
+                                        'body': comment['body'],
                                         'operation': 'Edit Comment'
                                       },
                                     );
+
+                                    fetchData(id);
                                   },
                                   child: const Icon(
                                     Icons.edit,

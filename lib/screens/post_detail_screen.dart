@@ -118,15 +118,19 @@ class _PostDetailsState extends State<PostDetails> {
             Align(
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
+                onPressed: () async {
+                  await Navigator.pushNamed(
                     context,
                     '/comment_form',
                     arguments: {
+                      'comment_id': 0,
                       'post_id': id,
+                      'body': '',
                       'operation': 'Add Comment',
                     },
                   );
+
+                  fetchData(id);
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Style.violet,

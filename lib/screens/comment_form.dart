@@ -24,7 +24,7 @@ class _CommentFormState extends State<CommentForm> {
 
   String url = 'http://localhost:3000/comments';
 
-  Future<http.Response> createPost(int id, String comment) async {
+  Future<http.Response> createPost(String postId, String comment) async {
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
@@ -32,8 +32,7 @@ class _CommentFormState extends State<CommentForm> {
       },
       body: jsonEncode(
         <String, String>{
-          'id': '$id',
-          'postId': '$id',
+          'postId': postId,
           'body': comment,
         },
       ),
@@ -42,7 +41,8 @@ class _CommentFormState extends State<CommentForm> {
     return response;
   }
 
-  Future<http.Response> updatePost(int id, String comment) async {
+  Future<http.Response> updatePost(
+      int id, String postId, String comment) async {
     final response = await http.put(
       Uri.parse('$url/$id'),
       headers: <String, String>{
@@ -50,8 +50,7 @@ class _CommentFormState extends State<CommentForm> {
       },
       body: jsonEncode(
         <String, String>{
-          'id': '$id',
-          'postId': '$id',
+          'postId': postId,
           'body': comment,
         },
       ),
@@ -62,13 +61,13 @@ class _CommentFormState extends State<CommentForm> {
 
   @override
   Widget build(BuildContext context) {
-    arguments = ModalRoute.of(context)?.settings.arguments;
+    arguments = ModalRoute.of(context)!.settings.arguments as dynamic;
     arguments['operation'] == "Add Comment"
         ? icon = Icons.add_comment
         : icon = Icons.edit_square;
 
     if (arguments['operation'] == "Edit Comment" && sateCount == 0) {
-      commentController.text = arguments['comment'];
+      commentController.text = arguments['body'];
       sateCount++;
     }
 
@@ -165,7 +164,7 @@ class _CommentFormState extends State<CommentForm> {
 
                                   if (arguments['operation'] == 'Add Comment') {
                                     await createPost(
-                                      arguments['post_id'],
+                                      arguments['post_id'].toString(),
                                       commentController.text,
                                     ).then(
                                       (value) {
@@ -180,7 +179,8 @@ class _CommentFormState extends State<CommentForm> {
                                   } else {
                                     if (commentChanged) {
                                       await updatePost(
-                                        arguments['post_id'],
+                                        arguments['comment_id'],
+                                        arguments['post_id'].toString(),
                                         commentController.text,
                                       ).then(
                                         (value) {

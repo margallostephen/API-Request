@@ -1,33 +1,4 @@
 {
-    "posts": [
-      {
-        "id": 9,
-        "title": "Post 9",
-        "body": "This is post 9"
-      },
-      {
-        "id": 10,
-        "title": "Post 10",
-        "body": "This is post 10"
-      }
-    ],
-    "comments": [
-      {
-        "postId": 9,
-        "body": "This is comment 9"
-      },
-      {
-        "postId": 10,
-        "body": "This is comment 10"
-      },
-      {
-        "postId": 10,
-        "body": "This is comment 101"
-      },
-      {
-        "postId": 10,
-        "body": "This is comment 101"
-      }
-    ]
-  }
-  
+  "posts": [],
+  "comments": []
+}
